@@ -5,4 +5,6 @@
 
 int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vector<float> &rarr2);
 
+void printArray(std::vector<float> &array);
+
 #endif
