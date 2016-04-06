@@ -3,8 +3,7 @@
 
 using namespace std;
 
-void swap(float el1, float el2){
-	cout << "Test swap" << endl;
+void swap(float &el1, float &el2){
 	float temp = el1;
 	el1 = el2;
 	el2 = temp; 
@@ -25,31 +24,24 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 	int j = array.size() - 1;
 	float op_el = array[half];
 
-	cout << op_el << endl;
+	int tes;
 	
+
 	do {
-		cout << "First test" << endl;
-		cout << endl;
-		cout << array[i] << endl;
-		cout << op_el << endl;
-		while ( array[i] < op_el ) {
-			i++;
-			cout << array[i] << endl;
-			cout << op_el << endl;
-		}
-		cout << "Between" << endl;
-		while ( array[j] > op_el ) j--;
-		cout << "Test" << endl;
+		while ( (array[i] < op_el) && (i < half) )  i++;
+
+		while ( (array[j] > op_el) && (j > half)  ) j--;
+ 
     	if (i <= j) {
       		swap(array[i], array[j]);
       		i++; j--;
     	}
-    	cout << "Test after swap" << endl;
-	} while (i <= j);
+	} while (i < half);
 
 	
 	vector<float> t1 (half, 0);
 	rarr1 = t1;
+
 
 	for(std::size_t i = 0; i < half; i++){
 		rarr1[i] = array[i];
