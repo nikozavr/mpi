@@ -17,45 +17,83 @@ void printArray(vector<float> &array){
 
 
 int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vector<float> &rarr2){
+	// return 1 - sorting and parting is complete
+	// return 0 - parting is not neccessary - size of array equals 1 or 2
+	// return -1 - some errors
+	
+	// Test print
+	cout << endl;
+	cout << "Start qs" << endl;
 	printArray(array);
-	size_t half = array.size() / 2;
 
-	int i = 0;
-	int j = array.size() - 1;
-	float op_el = array[half];
+	size_t arr_size = array.size();
 
-	int tes;
-	
+	if (arr_size > 1){
+		size_t half = array.size() / 2;
+		cout << half<< endl;
 
-	do {
-		while ( (array[i] < op_el) && (i < half) )  i++;
+		int i = 0;
+		int j = array.size() - 1;
+		float op_el = array[half];
+		cout << op_el << endl;
+		int tes;
+		
 
-		while ( (array[j] > op_el) && (j > half)  ) j--;
- 
-    	if (i <= j) {
-      		swap(array[i], array[j]);
-      		i++; j--;
-    	}
-	} while (i < half);
+		do {
+			cout << "I b J" << endl;
+			while ( (array[i] < op_el) && (i < half) )  i++;
+			cout << i << endl;
+			while ( (array[j] > op_el) && (j > half)  ) j--;
+			cout << j << endl;
+			if (i == half){
+				half = j;
+			} else  if (j == half) {
+				half = i;
+			}
+	 
+	    	if (i <= j) {
+	      		swap(array[i], array[j]);
+	      		i++; j--;
+	    	}
+		} while ((i < half) || (j > half));
 
-	
-	vector<float> t1 (half, 0);
-	rarr1 = t1;
+		if(array.size() > 2){
+			cout << "Res" << endl;
+			printArray(array);
 
+			cout << half << endl;
 
-	for(std::size_t i = 0; i < half; i++){
-		rarr1[i] = array[i];
+			rarr1.assign(array.begin(), array.begin() + half);
+
+			cout << "Test"<< endl;
+			cout << half << endl;
+			rarr2.assign(array.begin() + half , array.end());
+
+			printArray(rarr1);
+			printArray(rarr2);
+
+			vector<float> temp11;
+			vector<float> temp12;
+
+			vector<float> temp21;
+			vector<float> temp22;
+
+			quickSortPart(rarr1, temp11, temp12);
+			quickSortPart(rarr2, temp21, temp22);
+
+			for(std::size_t i = 0; i < half; i++){
+				array[i] = rarr1[i];
+			}
+
+			for (std::size_t i = half; i < array.size(); i++)
+			{
+				array[i] = rarr2[i-half];
+			} 
+		}
+		
+		return 1;
 	}
 
+	return 0;
 	
-	vector<float> t2(array.size() - half, 0);
-	rarr2 = t2;
-
-	for (std::size_t i = half; i < array.size(); i++)
-	{
-		rarr2[i - half] = array[i];
-	}
-
-	
-	return 1;
 }
