@@ -20,6 +20,11 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 	// return 1 - sorting and parting is complete
 	// return 0 - parting is not neccessary - size of array equals 1 or 2
 	// return -1 - some errors
+	
+	// Test print
+	cout << endl;
+	cout << "Start qs" << endl;
+	printArray(array);
 
 	size_t arr_size = array.size();
 
@@ -33,10 +38,11 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 		
 
 		do {
+			
 			while ( (array[i] < op_el) && (i < half) )  i++;
-
+			
 			while ( (array[j] > op_el) && (j > half)  ) j--;
-
+			;
 			if (i == half){
 				half = j;
 			} else  if (j == half) {
@@ -55,6 +61,23 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 
 			rarr2.assign(array.begin() + half , array.end());
 
+			vector<float> temp11;
+			vector<float> temp12;
+
+			vector<float> temp21;
+			vector<float> temp22;
+
+			quickSortPart(rarr1, temp11, temp12);
+			quickSortPart(rarr2, temp21, temp22);
+
+			for(std::size_t i = 0; i < half; i++){
+				array[i] = rarr1[i];
+			}
+
+			for (std::size_t i = half; i < array.size(); i++)
+			{
+				array[i] = rarr2[i-half];
+			} 
 		}
 		
 		return 1;
