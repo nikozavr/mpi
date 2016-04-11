@@ -33,19 +33,25 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 		
 
 		do {
+			bool need_inc = true;
+
 			while ( (array[i] < op_el) && (i < half) )  i++;
 
 			while ( (array[j] > op_el) && (j > half)  ) j--;
 
 			if (i == half){
 				half = j;
+				need_inc = false;
 			} else  if (j == half) {
 				half = i;
+				need_inc = false;
 			}
 	 
 	    	if (i <= j) {
 	      		swap(array[i], array[j]);
-	      		i++; j--;
+	      		if (need_inc){
+	      			i++; j--;
+	      		}
 	    	}
 		} while ((i < half) || (j > half));
 

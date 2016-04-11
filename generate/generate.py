@@ -13,4 +13,4 @@ args = parser.parse_args(sys.argv[1::])
 
 s = np.random.uniform(args.min, args.max, args.count)
 
-np.savetxt(args.output, s, delimiter=',') 
+np.savetxt(args.output, s, delimiter="\t") 
