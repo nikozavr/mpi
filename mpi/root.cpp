@@ -60,7 +60,7 @@ void startRoot(int rank, const char *dataFile) {
         log << "Computing v1" << std::endl;
         compute(res, v1, rank, maxRank / 2);
 
-        if (!s2.empty()) {
+        if (!v2.empty()) {
             log << "Waiting for result from node " << nextWorker << std::endl;
             std::vector<qh::Point> workerRes;
             qh::receiveResult(rank, nextWorker, workerRes);

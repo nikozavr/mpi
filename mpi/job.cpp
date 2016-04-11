@@ -33,9 +33,6 @@ void sendJob(int rank, int dest, int maxRank, std::vector<float> const &v) {
     log << "Sending points" << std::endl;
     MPI::COMM_WORLD.Send(sk.data(), int(sk.size()), PointType, dest, 0);
 
-    log << "Sending line points" << std::endl;
-    qh::Point linePoints[] = { a, b };
-    MPI::COMM_WORLD.Send(linePoints, 2, PointType, dest, 0);
 }
 
 void receiveJob(int rank, int &sender, int &maxRank, std::vector<float> &v) {
@@ -63,7 +60,7 @@ void receiveJob(int rank, int &sender, int &maxRank, std::vector<float> &v) {
     // log << "Received points" << qh::ToString(sk) << std::endl;
 
     log << "Receiving line..." << std::endl;
-    qh::Point line[2];
+    float line[2];
     MPI::COMM_WORLD.Recv(line, 2, PointType, sender, 0);
 
     a = line[0];
@@ -102,18 +99,18 @@ void receiveResult(int rank, int source, std::vector<float> &res) {
 }
 
 void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int maxRank) {
-    if (sk.empty()) {
+    if (v.empty()) {
         if (rank != maxRank) {
             int nextWorker = (maxRank - rank) / 2 + rank + 1;
-            qh::sendJob(rank, nextWorker, maxRank, std::vector<qh::Point>(), qh::Point(0, 0), q);
+            qh::sendJob(rank, nextWorker, maxRank, std::vector<float>());
 
-            std::vector<qh::Point> wr;
+            std::vector<float> wr;
             qh::receiveResult(rank, nextWorker, wr);
         }
         return;
     }
 
-    qh::Point c = farthestPoint(sk, qh::Line(p, q));
+    float c = farthestPoint(sk, qh::Line(p, q));
 
     res.push_back(c);
     std::vector<Point> s1 = qh::rightOf(qh::Line(p, c), sk);
@@ -136,7 +133,7 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
         compute(res, s1, p, c, rank,  (maxRank - rank) / 2 + rank);
 
 //        if (!s2.empty()) {
-            std::vector<qh::Point> workerRes;
+            std::vector<float> workerRes;
             receiveResult(rank, nextWorker, workerRes);
             res.insert(res.end(), workerRes.begin(), workerRes.end());
 //        }
