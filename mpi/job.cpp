@@ -6,13 +6,9 @@
 #include <iostream>
 #include <assert.h>
 
-#include "lib/QuickhullSerial.hh"
-#include "lib/Line.hh"
-#include "lib/Point.hh"
-
 #define log std::cout << "Node " << rank << ": "
 
-namespace qh {
+namespace qs {
 
 static MPI::Datatype PointType;
 static bool PointTypeSubmitted = false;

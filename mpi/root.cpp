@@ -43,13 +43,13 @@ void startRoot(int rank, const char *dataFile) {
     int maxRank = MPI::COMM_WORLD.Get_size() - 1;
 
     if (maxRank > 0) {
-        
+
         int nextWorker = maxRank / 2 + 1;
 
         vector<float> v1;
         vector<float> v2;
 
-
+        quicksort
 
         if (!v2.empty()) {
             log << "max rank = " << maxRank << std::endl;
@@ -62,7 +62,7 @@ void startRoot(int rank, const char *dataFile) {
 
         if (!v2.empty()) {
             log << "Waiting for result from node " << nextWorker << std::endl;
-            std::vector<qh::Point> workerRes;
+            std::vector<float> workerRes;
             qh::receiveResult(rank, nextWorker, workerRes);
 
             log << "Merging results.." << std::endl;
@@ -73,7 +73,7 @@ void startRoot(int rank, const char *dataFile) {
         log << qh::ToString(res) << std::endl;
     }
     else {
-        std::vector<float> res = quickSortSerial(array);
+        quickSortSerial(array);
         log << "Result: " << std::endl;
         log << printArray(res) << std::endl;
     }

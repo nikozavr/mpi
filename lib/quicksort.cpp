@@ -1,12 +1,12 @@
 #include "quicksort.h"
-#include <iostream> 
+#include <iostream>
 
 using namespace std;
 
 void swap(float &el1, float &el2){
 	float temp = el1;
 	el1 = el2;
-	el2 = temp; 
+	el2 = temp;
 }
 
 void printArray(vector<float> &array){
@@ -14,7 +14,6 @@ void printArray(vector<float> &array){
     	cout << *i << ' ';
     cout << endl;
 }
-
 
 int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vector<float> &rarr2){
 	// return 1 - sorting and parting is complete
@@ -30,7 +29,7 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 		int j = array.size() - 1;
 		float op_el = array[half];
 		int tes;
-		
+
 
 		do {
 			bool need_inc = true;
@@ -46,7 +45,7 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 				half = i;
 				need_inc = false;
 			}
-	 
+
 	    	if (i <= j) {
 	      		swap(array[i], array[j]);
 	      		if (need_inc){
@@ -62,10 +61,22 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 			rarr2.assign(array.begin() + half , array.end());
 
 		}
-		
+
 		return 1;
 	}
 
 	return 0;
-	
+
+}
+
+void quickSortSerial(std::vector<float> &array){
+	std::vector<float> v1;
+	std::vector<float> v2;
+	quickSortPart(array, v1, v2);
+	if(v1.empty()){
+
+	}
+	if(){
+
+	}
 }
