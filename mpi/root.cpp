@@ -31,7 +31,6 @@ void startRoot(int rank, const char *dataFile) {
         if (!(iss >> a)) { break; } // error
         cout << a << endl;
         array.push_back(a);
-        // process pair (a,b)
     }
 
     log << "Finished reading file." << std::endl;

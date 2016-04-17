@@ -1,7 +1,7 @@
 #include <mpi.h>
 
-#include "worker.hh"
-#include "root.hh"
+#include "worker.h"
+#include "root.h"
 
 int main(int argc, char **argv) {
     MPI::Init(argc, argv);
@@ -9,10 +9,10 @@ int main(int argc, char **argv) {
     int rank = MPI::COMM_WORLD.Get_rank();
 
     if (rank == 0) {
-        qh::startRoot(0, argv[1]);
+        qs::startRoot(0, argv[1]);
     }
     else {
-        qh::startWorker(rank);
+        qs::startWorker(rank);
     }
 
     MPI::Finalize();
