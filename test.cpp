@@ -13,6 +13,7 @@ int main(){
 
 	std::ifstream infile("file");
 	vector<float> array;
+	vector<float> res;
 
 	std::string line;
 	while (std::getline(infile, line))
@@ -24,11 +25,11 @@ int main(){
 	    // process pair (a,b)
 	}
 
-  quickSortSerial(array);
+  res.insert(res.end(), array.begin(), array.end());
 
 	cout << endl;
 	cout << "Result" << endl;
-	printArray(array);
+	printArray(res);
 
 	return 1;
 }

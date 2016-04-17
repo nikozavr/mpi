@@ -22,6 +22,8 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 
 	size_t arr_size = array.size();
 
+
+
 	if (arr_size > 1){
 		size_t half = array.size() / 2;
 
@@ -54,15 +56,9 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 	    	}
 		} while ((i < half) || (j > half));
 
+		rarr1.assign(array.begin(), array.begin() + half);
 
-		if(array.size() > 1){
-
-			rarr1.assign(array.begin(), array.begin() + half);
-
-			rarr2.assign(array.begin() + half , array.end());
-
-		}
-
+		rarr2.assign(array.begin() + half , array.end());
 
 
 		return 1;
@@ -72,18 +68,16 @@ int quickSortPart(std::vector<float> &array, std::vector<float> &rarr1, std::vec
 
 }
 
-void quickSortSerial(std::vector<float> &array){
+void quickSort(std::vector<float> &array){
 	std::vector<float> v1;
 	std::vector<float> v2;
 	quickSortPart(array, v1, v2);
-	if(array.size()>1){
 		if(v1.size()>1){
-			quickSortSerial(v1);
+			quickSort(v1);
 		}
 		array.assign(v1.begin(), v1.end());
 		if(v2.size()>1){
-			quickSortSerial(v2);
+			quickSort(v2);
 		}
 		array.insert( array.end(), v2.begin(), v2.end() );
-	}
 }

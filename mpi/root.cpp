@@ -22,6 +22,7 @@ void startRoot(int rank, const char *dataFile) {
     std::ifstream ifs(dataFile);
 
     vector<float> array;
+    vector<float> res;
 
     std::string line;
     while (std::getline(infile, line))
@@ -57,7 +58,7 @@ void startRoot(int rank, const char *dataFile) {
         }
 
         log << "Computing v1" << std::endl;
-        compute(array, v1, rank, maxRank / 2);
+        compute(res, v1, rank, maxRank / 2);
 
         if (!v2.empty()) {
             log << "Waiting for result from node " << nextWorker << std::endl;
@@ -65,14 +66,14 @@ void startRoot(int rank, const char *dataFile) {
             qs::receiveResult(rank, nextWorker, workerRes);
 
             log << "Merging results.." << std::endl;
-            array.insert(array.end(), workerRes.begin(), workerRes.end());
+            res.insert(res.end(), workerRes.begin(), workerRes.end());
         }
 
         log << "Result:" << std::endl;
-        log << printArray(array) << std::endl;
+        log << printArray(res) << std::endl;
     }
     else {
-        quickSortSerial(array);
+        quickSort(array);
         log << "Result: " << std::endl;
         log << printArray(array) << std::endl;
     }
