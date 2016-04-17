@@ -15,7 +15,7 @@
 
 using namespace std;
 
-namespace qh {
+namespace qs {
 
 void startRoot(int rank, const char *dataFile) {
     log << "Reading file..." << std::endl;
@@ -48,33 +48,33 @@ void startRoot(int rank, const char *dataFile) {
         vector<float> v1;
         vector<float> v2;
 
-        quicksort
+        quickSortPart(array, v1, v2);
 
         if (!v2.empty()) {
             log << "max rank = " << maxRank << std::endl;
             log << "nextWorker = " << nextWorker << std::endl;
-            qh::sendJob(rank, nextWorker, maxRank, v2);
+            qs::sendJob(rank, nextWorker, maxRank, v2);
         }
 
         log << "Computing v1" << std::endl;
-        compute(res, v1, rank, maxRank / 2);
+        compute(array, v1, rank, maxRank / 2);
 
         if (!v2.empty()) {
             log << "Waiting for result from node " << nextWorker << std::endl;
             std::vector<float> workerRes;
-            qh::receiveResult(rank, nextWorker, workerRes);
+            qs::receiveResult(rank, nextWorker, workerRes);
 
             log << "Merging results.." << std::endl;
-            res.insert(res.end(), workerRes.begin(), workerRes.end());
+            array.insert(array.end(), workerRes.begin(), workerRes.end());
         }
 
         log << "Result:" << std::endl;
-        log << qh::ToString(res) << std::endl;
+        log << printArray(array) << std::endl;
     }
     else {
         quickSortSerial(array);
         log << "Result: " << std::endl;
-        log << printArray(res) << std::endl;
+        log << printArray(array) << std::endl;
     }
 
     double stopTime = MPI::Wtime();

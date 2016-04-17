@@ -10,9 +10,6 @@
 
 namespace qs {
 
-static MPI::Datatype PointType;
-static bool PointTypeSubmitted = false;
-
 void sendJob(int rank, int dest, int maxRank, std::vector<float> const &v) {
 
     log << "Spawning worker " << dest << std::endl;
@@ -23,12 +20,11 @@ void sendJob(int rank, int dest, int maxRank, std::vector<float> const &v) {
     log << "Max rank = " << jobInfo[1] << std::endl;
 
     log << "Sending size" << std::endl;
-    int size = int(sk.size());
+    int size = v.size();
     MPI::COMM_WORLD.Send(&size, 1, MPI::INT, dest, 0);
 
-    log << "Sending points" << std::endl;
-    MPI::COMM_WORLD.Send(sk.data(), int(sk.size()), PointType, dest, 0);
-
+    log << "Sending array" << std::endl;
+    MPI::COMM_WORLD.Send(v[0], size, MPI::FLOAT , dest, 0);
 }
 
 void receiveJob(int rank, int &sender, int &maxRank, std::vector<float> &v) {
@@ -49,28 +45,16 @@ void receiveJob(int rank, int &sender, int &maxRank, std::vector<float> &v) {
 
     assert(size != -1);
 
-    log << "Receiving points..." << std::endl;
-    sk.resize(size_t(size));
-    MPI::COMM_WORLD.Recv(sk.data(), size, PointType, sender, 0);
-
-    // log << "Received points" << qh::ToString(sk) << std::endl;
-
-    log << "Receiving line..." << std::endl;
-    float line[2];
-    MPI::COMM_WORLD.Recv(line, 2, PointType, sender, 0);
+    log << "Receiving array..." << std::endl;
+    v.resize(size_t(size));
+    MPI::COMM_WORLD.Recv(v[0], size, MPI::FLOAT, sender, 0);
 
     a = line[0];
     b = line[1];
 
-    log << "Line = [" << qh::ToString(a) << "]" << " [" << qh::ToString(b) << "]" << std::endl;
 }
 
 void sendResult(int rank, int dest, std::vector<float> const &res) {
-    if (!PointTypeSubmitted) {
-        PointType = declareMPIPoint();
-        PointType.Commit();
-        PointTypeSubmitted = true;
-    }
 
     log << "Sending result to " << dest << std::endl;
     int resSize = int(res.size());
@@ -79,11 +63,6 @@ void sendResult(int rank, int dest, std::vector<float> const &res) {
 }
 
 void receiveResult(int rank, int source, std::vector<float> &res) {
-    if (!PointTypeSubmitted) {
-        PointType = declareMPIPoint();
-        PointType.Commit();
-        PointTypeSubmitted = true;
-    }
 
     log << "Receiving result from " << source << std::endl;
     int resSize = -1;
@@ -98,15 +77,13 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
     if (v.empty()) {
         if (rank != maxRank) {
             int nextWorker = (maxRank - rank) / 2 + rank + 1;
-            qh::sendJob(rank, nextWorker, maxRank, std::vector<float>());
+            qs::sendJob(rank, nextWorker, maxRank, std::vector<float>());
 
             std::vector<float> wr;
-            qh::receiveResult(rank, nextWorker, wr);
+            qs::receiveResult(rank, nextWorker, wr);
         }
         return;
     }
-
-    float c = farthestPoint(sk, qh::Line(p, q));
 
     res.push_back(c);
     std::vector<Point> s1 = qh::rightOf(qh::Line(p, c), sk);
