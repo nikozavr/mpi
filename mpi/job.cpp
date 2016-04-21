@@ -1,7 +1,7 @@
 #include <mpi.h>
 
 #include "job.h"
-
+#include "../lib/quicksort.h"
 #include <vector>
 #include <iostream>
 #include <assert.h>
@@ -82,6 +82,13 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
         return;
     }
 
+    vector<float> v1;
+    vector<float> v2;
+
+    quickSortPart(v, v1, v2);
+
+    res = v1;
+
     if (rank != maxRank) {
         log << "maxRank = " << maxRank << ". rank = " << rank << std::endl;
 
@@ -104,6 +111,7 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
     else {
         log << "I am the last. Computing result on my own" << std::endl;
         quickSort(v);
+        res = v;
     }
 }
 

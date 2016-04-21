@@ -10,10 +10,8 @@
 using namespace std;
 
 int main(){
-
 	std::ifstream infile("file");
 	vector<float> array;
-	vector<float> res;
 
 	std::string line;
 	while (std::getline(infile, line))
@@ -25,11 +23,10 @@ int main(){
 	    // process pair (a,b)
 	}
 
-  res.insert(res.end(), array.begin(), array.end());
-
+  quickSort(array);
 	cout << endl;
 	cout << "Result" << endl;
-	printArray(res);
+	printArray(array);
 
 	return 1;
 }

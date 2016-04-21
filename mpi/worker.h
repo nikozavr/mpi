@@ -3,7 +3,7 @@
 
 namespace qs {
 
-void startWorker(int rank, const char *dataFile);
+void startWorker(int rank);
 
 }
 
