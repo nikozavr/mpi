@@ -56,7 +56,7 @@ void sendResult(int rank, int dest, std::vector<float> const &res) {
     log << "Sending result to " << dest << std::endl;
     int resSize = int(res.size());
     MPI::COMM_WORLD.Send(&resSize, 1, MPI::INT, dest, 0);
-    MPI::COMM_WORLD.Send(&res[0], resSize, PointType, dest, 0);
+    MPI::COMM_WORLD.Send(&res[0], resSize, MPI::FLOAT, dest, 0);
 }
 
 void receiveResult(int rank, int source, std::vector<float> &res) {
@@ -67,7 +67,7 @@ void receiveResult(int rank, int source, std::vector<float> &res) {
     log << "Res size = " << resSize << std::endl;
 
     res.resize(size_t(resSize));
-    MPI::COMM_WORLD.Recv(&res[0], resSize, PointType, source, MPI_ANY_TAG);
+    MPI::COMM_WORLD.Recv(&res[0], resSize, MPI::FLOAT, source, MPI_ANY_TAG);
 }
 
 void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int maxRank) {
@@ -82,10 +82,11 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
         return;
     }
 
-    vector<float> v1;
-    vector<float> v2;
+    std::vector<float> arr(v);
+    std::vector<float> v1;
+    std::vector<float> v2;
 
-    quickSortPart(v, v1, v2);
+    qs::quickSortPart(arr, v1, v2);
 
     res = v1;
 
@@ -110,8 +111,8 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
     }
     else {
         log << "I am the last. Computing result on my own" << std::endl;
-        quickSort(v);
-        res = v;
+        std::vector<float> res(v);
+        qs::quickSort(res);
     }
 }
 

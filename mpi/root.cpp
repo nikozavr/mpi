@@ -1,15 +1,13 @@
 #include <mpi.h>
 #include "root.h"
 #include "job.h"
-
 #include <iostream>
 #include <cassert>
 #include <assert.h>
 #include <cmath>
 #include <fstream>
-
+#include <sstream>
 #include "../lib/quicksort.h"
-
 
 #define log std::cout << "Root: "
 
@@ -19,7 +17,7 @@ namespace qs {
 
 void startRoot(int rank, const char *dataFile) {
     log << "Reading file..." << std::endl;
-    std::ifstream ifs(dataFile);
+    std::ifstream infile(dataFile);
 
     vector<float> array;
     vector<float> res;
@@ -30,7 +28,6 @@ void startRoot(int rank, const char *dataFile) {
         std::istringstream iss(line);
         float a;
         if (!(iss >> a)) { break; } // error
-        cout << a << endl;
         array.push_back(a);
     }
 
@@ -49,7 +46,7 @@ void startRoot(int rank, const char *dataFile) {
         vector<float> v1;
         vector<float> v2;
 
-        quickSortPart(array, v1, v2);
+        qs::quickSortPart(array, v1, v2);
 
         if (!v2.empty()) {
             log << "max rank = " << maxRank << std::endl;
@@ -70,12 +67,12 @@ void startRoot(int rank, const char *dataFile) {
         }
 
         log << "Result:" << std::endl;
-        log << printArray(res) << std::endl;
+        qs::printArray(res);
     }
     else {
         quickSort(array);
         log << "Result: " << std::endl;
-        log << printArray(array) << std::endl;
+        qs::printArray(array);
     }
 
     double stopTime = MPI::Wtime();

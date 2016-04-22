@@ -1,6 +1,8 @@
 #ifndef MPI3_JOB_H
 #define MPI3_JOB_H
 
+#include <vector>
+
 namespace qs {
 
 void sendJob(int rank, int dest, int maxRank, std::vector<float> const &v);
