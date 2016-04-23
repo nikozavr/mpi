@@ -1,7 +1,7 @@
 #include <mpi.h>
 
 #include "job.h"
-#include "../lib/quicksort.h"
+#include "lib/quicksort.h"
 #include <vector>
 #include <iostream>
 #include <assert.h>
@@ -86,7 +86,7 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
     std::vector<float> v1;
     std::vector<float> v2;
 
-    qs::quickSortPart(arr, v1, v2);
+  quickSortPart(arr, v1, v2);
 
     res = v1;
 
@@ -112,7 +112,7 @@ void compute(std::vector<float> &res, std::vector<float> const &v, int rank, int
     else {
         log << "I am the last. Computing result on my own" << std::endl;
         std::vector<float> res(v);
-        qs::quickSort(res);
+        quickSort(res);
     }
 }
 

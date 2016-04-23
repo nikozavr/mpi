@@ -1,5 +1,4 @@
-#ifndef QUICK_SORT_H
-#define QUICK_SORT_H
+#pragma once
 
 #include <vector>
 
@@ -12,5 +11,3 @@ namespace qs {
   void printArray(std::vector<float> &array);
 
 }
-
-#endif

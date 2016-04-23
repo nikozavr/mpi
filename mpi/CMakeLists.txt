@@ -14,5 +14,5 @@ add_definitions(-DENABLE_TRACE)
 
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -pthread" )
 
-add_executable(qs ${SOURCE_FILES})
-target_link_libraries(quicksort_lib)
+add_executable(qsmpi ${SOURCE_FILES})
+target_link_libraries(qsmpi quicksort_lib)

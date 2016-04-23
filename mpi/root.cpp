@@ -7,7 +7,7 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
-#include "../lib/quicksort.h"
+#include "lib/quicksort.h"
 
 #define log std::cout << "Root: "
 

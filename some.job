@@ -26,7 +26,7 @@
 # Default value: /dev/null
 
 #### Atension IU7 students !!!
-# @ initialdir = /gpfs/home/iu7/stud035/lab1
+# @ initialdir = /gpfs/home/iu7/stud035/work/
 
 # STDOUT for job
 # @ output = $(initialdir)/test.$(user).$(jobid).stdout
@@ -75,6 +75,6 @@ export I_MPI_PIN_DOMAIN
 mpdboot -r ssh -n `cat $LOADL_HOSTFILE|sort|uniq|wc -l` -f $LOADL_HOSTFILE
 
 #### Atension IU7 students !!!
-mpirun -r ssh -machinefile $LOADL_HOSTFILE -n $LOADL_TOTAL_TASKS ./qs file
+mpirun -r ssh -machinefile $LOADL_HOSTFILE -n $LOADL_TOTAL_TASKS ./qsmpi file
 
 mpdallexit

@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <vector>
 #include "job.h"
-#include "../lib/quicksort.h"
 
 #define log std::cout << "Worker " << rank << ": "
 
